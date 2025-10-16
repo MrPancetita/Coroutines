@@ -1,6 +1,7 @@
 package net.iessochoa.sergiocontreras.coroutines
 
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
 
@@ -12,7 +13,48 @@ import kotlin.random.Random
  * Creado en Settings -> Editor -> File and Code Templates
  */
 
+// Corutinas es mucho más rápido que Thread.
+
+val limit = 10_000
+
 fun main() {
+    threads()
+    coroutines()
+
+}
+
+fun threads() {
+    newTopic("Threads")
+    val start = System.currentTimeMillis()
+    (1..limit).forEach {
+        Thread {
+            print("*")
+            if (it == limit) {
+                val timeSpent = (System.currentTimeMillis() - start)
+                println("\nTime Threads: $timeSpent milisegundos")
+            }
+            Thread.sleep(someTime())
+        }.start()
+    }
+}
+fun coroutines() {
+    newTopic("Coroutines")
+    val start = System.currentTimeMillis()
+    runBlocking {
+        (1..limit).forEach {
+            launch {
+                print("*")
+                if (it == limit) {
+                    val timeSpent = (System.currentTimeMillis() - start)
+                    println("\nTime Coroutines: $timeSpent milisegundos")
+                }
+                delayRandom()
+            }
+        }
+    }
+}
+
+fun suspendFun() {
     newTopic("Coroutines")
     println("time: ${someTime()}")
     //Esto es solo para pruebas never in prod
@@ -20,6 +62,7 @@ fun main() {
         println("Delay: ${delayRandom()}")
     }
 }
+
 
 suspend fun delayRandom() {
     delay(someTime())
