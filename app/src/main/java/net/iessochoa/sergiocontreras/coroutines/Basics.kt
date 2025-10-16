@@ -1,6 +1,10 @@
 package net.iessochoa.sergiocontreras.coroutines
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
@@ -20,7 +24,42 @@ val limit = 10_000
 fun main() {
     //threads()
     //coroutines()
-    job()
+    //job()
+    scope()
+    readln()   //Para hacerle esperar
+
+}
+
+fun scope() {
+    newTopic("Scope")
+    val job = Job()
+    val scope = CoroutineScope(job)
+    scope.launch {
+
+        println("isActive: ${job.isActive}")
+        println("isCancelled: ${job.isCancelled}")
+        println("isCompleted: ${job.isCompleted}")
+
+        (1..limit).forEach {
+            if (!scope.isActive) return@launch
+            println(it)
+            if (it == 3) {
+                scope.cancel()
+                println("Cancelado")
+                println("isActive: ${job.isActive}")
+                println("isCancelled: ${job.isCancelled}")
+                println("isCompleted: ${job.isCompleted}")
+            }
+
+        }
+
+    } //scope
+    runBlocking {
+        delay(someTime())
+        println("isActive: ${job.isActive}")
+        println("isCancelled: ${job.isCancelled}")
+        println("isCompleted: ${job.isCompleted}")
+    }
 
 }
 
