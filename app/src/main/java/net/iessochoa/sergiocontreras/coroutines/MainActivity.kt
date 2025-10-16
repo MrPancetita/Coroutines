@@ -20,28 +20,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             CoroutinesTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    MainView(modifier = Modifier.padding(innerPadding)) //Aquí también
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
+//Sustituimos
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     CoroutinesTheme {
-        Greeting("Android")
+        MainPreview()
     }
 }
