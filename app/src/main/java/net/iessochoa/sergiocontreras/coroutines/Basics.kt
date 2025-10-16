@@ -18,9 +18,33 @@ import kotlin.random.Random
 val limit = 10_000
 
 fun main() {
-    threads()
-    coroutines()
+    //threads()
+    //coroutines()
+    job()
 
+}
+
+fun job() {
+    newTopic("job")
+    runBlocking {
+        val time = someTime()
+        val job = launch {
+            println("Inicia proceso...")
+            delay(time)
+            println("Finaliza proceso...")
+        }
+
+        println("isActive: ${job.isActive}")
+        println("isCancelled: ${job.isCancelled}")
+        println("isCompleted: ${job.isCompleted}")
+
+        job.cancel()
+        delay(time * 2)
+        println("isActive: ${job.isActive}")
+        println("isCancelled: ${job.isCancelled}")
+        println("isCompleted: ${job.isCompleted}")
+
+    }
 }
 
 fun threads() {
