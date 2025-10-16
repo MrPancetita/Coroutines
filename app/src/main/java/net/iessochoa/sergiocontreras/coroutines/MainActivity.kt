@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,7 +21,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             CoroutinesTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainView(modifier = Modifier.padding(innerPadding)) //Aquí también
+                    MainView(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(innerPadding)
+                        ) //Aquí también
                 }
             }
         }
@@ -29,9 +33,9 @@ class MainActivity : ComponentActivity() {
 
 
 //Sustituimos
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun GreetingPreview() {
+fun MainActivityPreview() {
     CoroutinesTheme {
         MainPreview()
     }
