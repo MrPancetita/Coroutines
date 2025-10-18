@@ -29,10 +29,20 @@ import net.iessochoa.sergiocontreras.coroutines.ui.theme.CoroutinesTheme
  */
 
 @Composable
-fun MainView(modifier: Modifier) {
+fun MainView(
+    modifier: Modifier,
+    inProgress: Boolean,
+    result: Long,
+    onClick: (Long) -> Unit
+) {
     var inProgressValue by remember { mutableStateOf(false) }
     var resulValue by remember { mutableStateOf("") }
     var numberValue by remember {mutableStateOf("")}
+
+    inProgressValue = inProgress
+    resulValue = "Fibonacci: $result"
+
+
 
     Column(modifier.padding(dimensionResource(R.dimen.common_padding_min)),
         horizontalAlignment = Alignment.CenterHorizontally) {
@@ -50,7 +60,9 @@ fun MainView(modifier: Modifier) {
 
         )
 
-        Button(onClick = {}) {
+        Button(onClick = {
+            onClick(numberValue.toLong())
+        }) {
             Text("Calcular")
         }
 
@@ -70,7 +82,10 @@ fun MainPreview() {
     CoroutinesTheme {  // No te olvides esto
         MainView(Modifier
             .fillMaxWidth()
-            .padding(top = 24.dp))
+            .padding(top = 24.dp),
+            false,
+            0,
+            {})
     }
 }
 

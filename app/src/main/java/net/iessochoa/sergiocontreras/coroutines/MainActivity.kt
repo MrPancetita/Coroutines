@@ -10,6 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import net.iessochoa.sergiocontreras.coroutines.ui.theme.CoroutinesTheme
@@ -21,13 +26,32 @@ class MainActivity : ComponentActivity() {
         setContent {
             CoroutinesTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
+                    var result by remember { mutableLongStateOf(0) }
+                    var inProgress by remember { mutableStateOf(false) }
+
+
                     MainView(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(innerPadding)
+                        .padding(innerPadding),
+                        inProgress = inProgress,
+                        result = result,
+                        onClick = { number ->
+                            inProgress = true
+                            startFib(number) { response ->
+                                result = response
+                                inProgress = false
+                            }
+                        }
                         ) //Aquí también
                 }
             }
         }
+    }
+
+    private fun startFib(number: Long, onResult: (Long) -> Unit) {
+        val fib = number * 3
+        onResult(fib)
     }
 }
 
