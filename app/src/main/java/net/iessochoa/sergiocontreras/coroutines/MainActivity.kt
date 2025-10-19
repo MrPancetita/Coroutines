@@ -18,8 +18,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.iessochoa.sergiocontreras.coroutines.ui.theme.CoroutinesTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,9 +55,16 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startFib(number: Long, onResult: (Long) -> Unit) {
-        CoroutineScope(Job()).launch {
+
+        //Dispatcher default para cosas que tiran mucha CPU
+        //Dispatcher main para cosas que tienen que ver con la UI
+        //Dispacher IO para cosas que tienen que ver con la red, base de datos, etc.
+
+        CoroutineScope(Job()).launch(Dispatchers.Default) {
             val fib = fibonacci(number)
-            onResult(fib)
+            withContext(Dispatchers.Main) { //Cambia de forma temporal el dispatcher luego vuelve al de antes
+                onResult(fib)
+            }
         }
 
     }
