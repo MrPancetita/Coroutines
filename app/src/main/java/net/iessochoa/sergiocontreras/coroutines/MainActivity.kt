@@ -17,6 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import net.iessochoa.sergiocontreras.coroutines.ui.theme.CoroutinesTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,8 +53,16 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startFib(number: Long, onResult: (Long) -> Unit) {
-        val fib = number * 3
-        onResult(fib)
+        CoroutineScope(Job()).launch {
+            val fib = fibonacci(number)
+            onResult(fib)
+        }
+
+    }
+
+    private fun fibonacci(n: Long): Long {
+        return if (n <= 1) n
+        else fibonacci(n - 1) + fibonacci(n - 2)
     }
 }
 
